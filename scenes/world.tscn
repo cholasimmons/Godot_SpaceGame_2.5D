@@ -1,0 +1,78 @@
+[gd_scene load_steps=11 format=3 uid="uid://balk2wn06s1b8"]
+
+[ext_resource type="Script" path="res://scripts/world.gd" id="1_fq1ia"]
+[ext_resource type="Texture2D" uid="uid://vhi2d45e146v" path="res://assets/textures/dev_blue.png" id="3_5whgr"]
+[ext_resource type="Environment" uid="uid://yj01jnjx7tr" path="res://assets/environment.tres" id="3_ilskh"]
+[ext_resource type="PackedScene" uid="uid://dla6v7u4qwk8r" path="res://scenes/ship_3d.tscn" id="4_j5nbr"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_580u6"]
+size = Vector3(3000, 0.1, 3000)
+
+[sub_resource type="BoxMesh" id="BoxMesh_uaksn"]
+size = Vector3(3000, 0.1, 3000)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_thl4l"]
+albedo_color = Color(0.152941, 0.14902, 0.282353, 1)
+albedo_texture = ExtResource("3_5whgr")
+uv1_scale = Vector3(10, 10, 10)
+uv1_triplanar = true
+uv1_world_triplanar = true
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_58x7p"]
+size = Vector3(8, 20, 8)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_cr7ft"]
+albedo_color = Color(0.447059, 0.556863, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_2seg8"]
+material = SubResource("StandardMaterial3D_cr7ft")
+size = Vector3(8, 20, 8)
+
+[node name="World" type="Node3D"]
+script = ExtResource("1_fq1ia")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource("3_ilskh")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.63178, -0.168802, 0.756545, -0.775045, -0.15348, 0.612984, 0.0126414, -0.973627, -0.227795, -90.7426, 66.7131, -88.4599)
+light_energy = 2.0
+shadow_enabled = true
+shadow_reverse_cull_face = true
+shadow_opacity = 0.94
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.799344, -0.133811, 0.585785, -0.0812883, 0.941845, 0.326069, -0.59535, -0.308259, 0.74198, 15.1205, 24.1382, -0.786743)
+fov = 92.6
+near = 1.0
+far = 786.13
+
+[node name="Ground" type="Node3D" parent="."]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Ground"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ground/StaticBody3D"]
+shape = SubResource("BoxShape3D_580u6")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="Ground/StaticBody3D"]
+mesh = SubResource("BoxMesh_uaksn")
+material = SubResource("StandardMaterial3D_thl4l")
+
+[node name="Ship" parent="." instance=ExtResource("4_j5nbr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, -5.99475)
+wall_min_slide_angle = 0.0
+
+[node name="ShipSpawnPos" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, -5.71505)
+
+[node name="LaserContainer" type="Node3D" parent="."]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.00278, 0, -24.4441)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 10, 0)
+shape = SubResource("BoxShape3D_58x7p")
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="StaticBody3D/CollisionShape3D"]
+mesh = SubResource("BoxMesh_2seg8")
