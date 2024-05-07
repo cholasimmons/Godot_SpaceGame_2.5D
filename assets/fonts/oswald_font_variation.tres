@@ -1,0 +1,7 @@
+[gd_resource type="FontVariation" load_steps=2 format=3 uid="uid://ghai7ln8cmyo"]
+
+[ext_resource type="FontFile" uid="uid://dy6o4ftoqb1jq" path="res://assets/fonts/Oswald/Oswald-VariableFont_wght.ttf" id="1_pgrgh"]
+
+[resource]
+resource_name = "ozzi"
+base_font = ExtResource("1_pgrgh")

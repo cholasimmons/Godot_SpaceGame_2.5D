@@ -1,9 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://balk2wn06s1b8"]
+[gd_scene load_steps=14 format=3 uid="uid://balk2wn06s1b8"]
 
 [ext_resource type="Script" path="res://scripts/world.gd" id="1_fq1ia"]
 [ext_resource type="Texture2D" uid="uid://vhi2d45e146v" path="res://assets/textures/dev_blue.png" id="3_5whgr"]
 [ext_resource type="Environment" uid="uid://yj01jnjx7tr" path="res://assets/environment.tres" id="3_ilskh"]
 [ext_resource type="PackedScene" uid="uid://dla6v7u4qwk8r" path="res://scenes/ship_3d.tscn" id="4_j5nbr"]
+[ext_resource type="PhysicsMaterial" uid="uid://cm4ftm564l2i3" path="res://assets/materials/concrete_physics_material.tres" id="5_t2mhb"]
+[ext_resource type="PackedScene" uid="uid://3rpccn0yy3ul" path="res://scenes/GUI_debug.tscn" id="5_vfwlf"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_580u6"]
 size = Vector3(3000, 0.1, 3000)
@@ -28,6 +30,9 @@ albedo_color = Color(0.447059, 0.556863, 1, 1)
 material = SubResource("StandardMaterial3D_cr7ft")
 size = Vector3(8, 20, 8)
 
+[sub_resource type="SphereShape3D" id="SphereShape3D_jo41y"]
+radius = 7.0
+
 [node name="World" type="Node3D"]
 script = ExtResource("1_fq1ia")
 
@@ -42,7 +47,8 @@ shadow_reverse_cull_face = true
 shadow_opacity = 0.94
 
 [node name="Camera3D" type="Camera3D" parent="."]
-transform = Transform3D(0.799344, -0.133811, 0.585785, -0.0812883, 0.941845, 0.326069, -0.59535, -0.308259, 0.74198, 15.1205, 24.1382, -0.786743)
+transform = Transform3D(0.799344, -0.441081, 0.408041, -0.0812883, 0.593455, 0.800751, -0.59535, -0.673245, 0.43852, 7.94715, 56.5811, -14.8477)
+current = true
 fov = 92.6
 near = 1.0
 far = 786.13
@@ -60,19 +66,32 @@ material = SubResource("StandardMaterial3D_thl4l")
 
 [node name="Ship" parent="." instance=ExtResource("4_j5nbr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, -5.99475)
-wall_min_slide_angle = 0.0
 
 [node name="ShipSpawnPos" type="Marker3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, -5.71505)
 
 [node name="LaserContainer" type="Node3D" parent="."]
 
-[node name="StaticBody3D" type="StaticBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.00278, 0, -24.4441)
+[node name="StaticBody3D" type="RigidBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -7.55461, 0, -24.4441)
+axis_lock_linear_y = true
+mass = 4.0
+physics_material_override = ExtResource("5_t2mhb")
+gravity_scale = 0.2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 10, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.956627, 10, 0)
 shape = SubResource("BoxShape3D_58x7p")
 
 [node name="CSGMesh3D" type="CSGMesh3D" parent="StaticBody3D/CollisionShape3D"]
 mesh = SubResource("BoxMesh_2seg8")
+
+[node name="Control" parent="." instance=ExtResource("5_vfwlf")]
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 10, 7)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("SphereShape3D_jo41y")
+
+[connection signal="area_entered" from="Area3D" to="." method="_on_area_3d_area_entered"]

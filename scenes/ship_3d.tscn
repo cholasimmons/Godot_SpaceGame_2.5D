@@ -1,10 +1,12 @@
 [gd_scene load_steps=8 format=3 uid="uid://dla6v7u4qwk8r"]
 
 [ext_resource type="Script" path="res://scripts/ship_control.gd" id="1_25s7k"]
-[ext_resource type="Script" path="res://scripts/Camera3D_TopDown.gd" id="2_ps3t2"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_gj5ou"]
-size = Vector3(4.82007, 1, 5.76208)
+size = Vector3(4.82007, 1, 2.4346)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_re0wt"]
+size = Vector3(1.87085, 1, 2.63477)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_xobf1"]
 
@@ -42,32 +44,34 @@ shadow_mesh = SubResource("ArrayMesh_up4x2")
 
 [sub_resource type="BoxMesh" id="BoxMesh_v1rvk"]
 
-[node name="CharacterBody3D" type="CharacterBody3D" groups=["player", "ship"]]
-motion_mode = 1
-floor_stop_on_slope = false
-floor_constant_speed = true
-safe_margin = 0.01
+[node name="RigidBody3D" type="RigidBody3D" groups=["player", "ship"]]
+axis_lock_linear_y = true
+axis_lock_angular_x = true
+axis_lock_angular_z = true
+gravity_scale = 1.8
 script = ExtResource("1_25s7k")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00646973, 0.270999, -0.830017)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00646973, 0.270999, 0.761591)
 shape = SubResource("BoxShape3D_gj5ou")
 
-[node name="ShipDummy" type="MeshInstance3D" parent="CollisionShape3D" groups=["player"]]
-transform = Transform3D(0.904123, 0, 0, 0, 0.904123, 0, 0, 0, 0.904123, 0, -0.239672, -0.294226)
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.77648)
+shape = SubResource("BoxShape3D_re0wt")
+
+[node name="ShipDummy" type="MeshInstance3D" parent="." groups=["player"]]
+transform = Transform3D(0.904123, 0, 0, 0, 0.904123, 0, 0, 0, 0.904123, 0.00646973, 0.031327, -0.869926)
 mesh = SubResource("ArrayMesh_5d7ib")
 skeleton = NodePath("")
 
-[node name="CSGMesh3D" type="CSGMesh3D" parent="CollisionShape3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -3.08146)
+[node name="CSGMesh3D" type="CSGMesh3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.00646973, 0.270999, -1.48994)
 visible = false
 mesh = SubResource("BoxMesh_v1rvk")
 
 [node name="Muzzle" type="Marker3D" parent="." groups=["player"]]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0428128, -2.4079)
 
-[node name="Camera3D_TopDown" type="Camera3D" parent="." node_paths=PackedStringArray("target")]
+[node name="Camera3D_TopDown" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 30, 0)
-current = true
-script = ExtResource("2_ps3t2")
-target = NodePath("..")
+visible = false

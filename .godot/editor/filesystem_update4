@@ -1,8 +1,8 @@
-res://scenes/ship_3d_missile.tscn
-res://assets/environment.tres
 res://scenes/world.tscn
+res://assets/environment.tres
 res://scenes/ship_3d.tscn
-res://scripts/ship_missile_control.gd
+res://scenes/ship_3d_missile.tscn
+res://scenes/GUI_debug.tscn
 res://scripts/ship_control.gd
+res://scripts/GUI_debug.gd
 res://scripts/world.gd
-res://scripts/Camera3D_TopDown.gd
